@@ -1,45 +1,27 @@
 package aust.csi.json.parser;
+import aust.csi.json.parser.libs.Car;
+import aust.csi.json.parser.libs.FileManager;
+import aust.csi.json.parser.libs.Person;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.attribute.FileAttribute;
 
 public class Main {
+    private static final String _fileName  = "person.json";
+    private static JSONArray _persons = new JSONArray();
 
     public static void main(String[] args) {
         System.out.println("Json Parser System");
-        JSONObject person = CreatePerson("Albert","Beirut",45);
-        System.out.println(person);
-        SaveToFile("person.json",person);
-       /*JSONArray array = new JSONArray();
-        array.put("Opel");
-        array.put("Mercedes");
-        person.put("carsCollection", array);
-        System.out.println(person);*/
-
-    }
-
-    private static void SaveToFile(String fileName, JSONObject value) {
-        String filePath = "D:\\Source\\Java\\TEMP\\"+fileName;
-        Path path =  Paths.get(filePath);
-        try
-        {
-            if(!Files.exists(path)){
-                path =  Files.createFile(path);
-            }
-            Files.write(path,value.toString().getBytes(StandardCharsets.UTF_8) );
-        }catch (Exception exception){
-         System.out.println(exception);
+        _persons = FileManager.loadFromFile(_fileName);
+        for (Object object: _persons) {
+            System.out.println("LoadedObject= "+ object);
         }
+        _persons.put(createPerson("Albert","Beirut",15));
+        FileManager.saveToFile(_fileName,_persons);
     }
 
-    private static JSONObject CreatePerson(String name,String city, int age){
+    private static JSONObject createPerson(String name,String city, int age){
         Person person = new Person(name,city,age);
         System.out.println(person);
         person.addCar(new Car("BMW","X5",2010));
