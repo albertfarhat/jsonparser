@@ -1,4 +1,4 @@
-package aust.csi.json.parser;
+package aust.csi.json.parser.libs;
 
 public class Car {
     public String getMake() {
